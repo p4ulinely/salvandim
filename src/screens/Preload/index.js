@@ -12,12 +12,10 @@ export default () => {
 
     useEffect(() => {
         (async () =>  {
-            const storageToken = await AsyncStorage.getItem('token');
-            // console.log('preload:', storageToken);
-            if (!storageToken) {
-                navigation.navigate(ScreenName.SignIn);
-            }
+            const uid = await AsyncStorage.getItem('uid');
 
+            if (!uid)
+                navigation.navigate(ScreenName.SignIn);
         })()
     }, []);
 

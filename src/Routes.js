@@ -12,18 +12,14 @@ const Routes = () => {
     const {
         user, 
         setUser, 
-        userToken, 
-        setUserToken, 
-        getTokenFromStorage,
-        setNewTokenOnLocalStorageFromAuthenticatedUser 
+        setDataOnLocalStorageFromAuthenticatedUser 
     } = useContext(AuthContext);
 
     const [initializing, setInitializing] = useState(true);
-    const [storageToken, setStorageToken] = useState('');
+    const [uid, setUid] = useState('');
 
     // Auth listener
     const onAuthStateChanged = (user) => {
-        console.log('onAuthStateChanged:', user !== null);
         setUser(user);
 
         if (initializing)
@@ -41,16 +37,18 @@ const Routes = () => {
         return null; // se tirar esse torno nao aparece Preload?
 
     (async () => {
-        if (user)
-            await setNewTokenOnLocalStorageFromAuthenticatedUser();
+        if (user){
+            await setDataOnLocalStorageFromAuthenticatedUser();
+        }
 
-        const token = await getTokenFromStorage();
-        setStorageToken(token);
+        const uid = await AsyncStorage.getItem('uid');
+
+        setUid(uid);
     })()
 
     return (
         <NavigationContainer>
-            { storageToken ? <AuthStack /> : <MainStack />}
+            { uid ? <AuthStack /> : <MainStack /> }
         </NavigationContainer>
     );
 };

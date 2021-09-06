@@ -35,7 +35,7 @@ import LockIcon from '../../assets/lock.svg';
 import { ScreenName } from '../../screens/ScreenNames';
 
 export default () => {
-    const { errorMessage, setErrorMessage, signIn , userToken } = useContext(AuthContext);
+    const { errorMessage, setErrorMessage, signIn } = useContext(AuthContext);
     const [emailField, setEmailField] = useState('');
     const [passwordField, setPasswordField] = useState('');
 
@@ -45,10 +45,9 @@ export default () => {
         setErrorMessage('');
     }
 
-    useEffect(() => {
-        // clearErrorMessage();
-        // console.log('login - auth-token:', userToken)
-    }, []);
+    // useEffect(() => {
+
+    // }, []);
 
     const handleCustomButtonClick = () => {
         if (emailField === '' || passwordField === '') {

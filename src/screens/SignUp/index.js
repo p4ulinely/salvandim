@@ -43,20 +43,18 @@ export default () => {
     
     const navigation = useNavigation();
     
-    const clearErrorMessage = () => {
-        setErrorMessage('');
-    }
+    const clearErrorMessage = () => setErrorMessage('');
 
-    useEffect(() => {
-        // clearErrorMessage();
-    }, []);
+    // useEffect(() => {
+
+    // }, []);
 
     const handleCustomButtonClick = () => {
-        if (emailField === '' || passwordField === '') {
+        if (nomeField === '' || emailField === '' || passwordField === '') {
             return setErrorMessage('Preencha todos os dados!');
         }
 
-        signUp(emailField, passwordField);
+        signUp(nomeField, emailField, passwordField);
     }
 
     const handleMessageButtonClick = () => {

@@ -21,26 +21,36 @@ export const AuthProvider = ({children}) => {
         return errrorMessagesTranslated.hasOwnProperty(message) ? errrorMessagesTranslated[message] : message;
     }
 
-    const getTokenFromStorage = async () => {
+    const getDataFromStorage = async () => {
         try {
+            const uid = await AsyncStorage.getItem('uid');
+            const email = await AsyncStorage.getItem('email');
             const token = await AsyncStorage.getItem('token');
-            return token;
+            
+            return { uid, email, token };
         } catch (error) {
             console.log(error);
         }
     };
 
-    const setNewTokenOnLocalStorageFromAuthenticatedUser = async () => {
+    const setDataOnLocalStorageFromAuthenticatedUser = async () => {
         try {
-            const authenticatedUserToken = await auth().currentUser.getIdToken();
-            await AsyncStorage.setItem('token', authenticatedUserToken); // set on local storage
+
+            const authenticatedUser = auth().currentUser;
+            const authenticatedUserToken = await authenticatedUser.getIdToken();
+            
+            await AsyncStorage.setItem('uid', authenticatedUser.uid);
+            await AsyncStorage.setItem('email', authenticatedUser.email);
+            await AsyncStorage.setItem('token', authenticatedUserToken);
         } catch (error) {
             console.log(error);
         }
     };
 
-    const clearStorageTokenOfStorage = async () => {
+    const clearStorageData = async () => {
         try {
+            await AsyncStorage.setItem('uid', '');
+            await AsyncStorage.setItem('email', '');
             await AsyncStorage.setItem('token', '');
         } catch (error) {
             console.log(error);
@@ -51,7 +61,7 @@ export const AuthProvider = ({children}) => {
         try {
             if (email && password) {
                 await auth().signInWithEmailAndPassword(email, password);
-                await setNewTokenOnLocalStorageFromAuthenticatedUser();
+                await setDataOnLocalStorageFromAuthenticatedUser();
                 setErrorMessage(''); // TODO: Tentar eliminar esse set, mas garantir que após o request o component seja renderizado.
             }
         } catch (error) {
@@ -60,11 +70,20 @@ export const AuthProvider = ({children}) => {
         }
     }
 
-    const handleSignUp = async (email, password) => {
+    const handleSignUp = async (name, email, password) => {
         try {
-            if (email && password) {
-                await auth().createUserWithEmailAndPassword(email, password);
-                await setNewTokenOnLocalStorageFromAuthenticatedUser();
+            if (name && email && password) {
+                await auth().createUserWithEmailAndPassword(email, password) // criar usuário
+                
+                const profile = {
+                    displayName: name,
+                    photoURL: '',
+                };
+                  
+                await auth().currentUser.updateProfile(profile); // atualiza o nome do usuário que acabou de se cadastrar                //TODO: enviar e-mail para confirmação de e-mail.
+
+                await setDataOnLocalStorageFromAuthenticatedUser();
+
                 setErrorMessage(''); // TODO: Tentar eliminar esse set, mas garantir que após o request o component seja renderizado.
             }
         } catch (error) {
@@ -76,7 +95,7 @@ export const AuthProvider = ({children}) => {
     const handleSignOut = async () => {
         try {
             await auth().signOut();
-            await clearStorageTokenOfStorage();
+            await clearStorageData();
         } catch (error) {
             console.log(error);
             setErrorMessage(translateErrrorMessage(error.code));
@@ -95,8 +114,8 @@ export const AuthProvider = ({children}) => {
                 signIn: handleSignIn,
                 signUp: handleSignUp,
                 signOut: handleSignOut,
-                getTokenFromStorage,
-                setNewTokenOnLocalStorageFromAuthenticatedUser
+                getDataFromStorage,
+                setDataOnLocalStorageFromAuthenticatedUser
             }}
         >
             { children }

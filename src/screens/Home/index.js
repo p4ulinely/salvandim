@@ -17,36 +17,38 @@ import LogoComponent from '../../components/Logo';
 
 export default () => {
     const { 
-        user, 
-        setUser, 
         signOut,
-        getTokenFromStorage
+        getDataFromStorage
     } = useContext(AuthContext);
 
-    const [ storageToken, setStorageToken ] = useState('');
+    const [ storage, setStorage ] = useState({
+        uid: '',
+        email: '',
+        token: ''
+     });
+
+    const setDataOnState = async () => {
+        const data = await getDataFromStorage();
+        setStorage(data);
+    };
 
     const handleSignOutClick = async () => {
         await signOut();
-        // setStorageToken('');
+        // setStorage(null);
     }
-
-    const setTokenOnState = async () => {
-        const token = await getTokenFromStorage();
-        setStorageToken(token);
-    };
-
+    
     useEffect(() => {
-        setTokenOnState();
+        setDataOnState();
     }, []);
 
     return (
         <Container>
             <LogoComponent />
             <Text>Home Logado</Text>
-            {/* <Text>{JSON.stringify({user})}</Text> */}
-            <Text>{storageToken.substring(0, 5)}</Text>
-            {/* <Text>{emailUser}</Text> */}
             <Text></Text>
+            <Text>{storage.uid}</Text>
+            <Text>{storage.email}</Text>
+            
             <Text></Text>
             <Text onPress={handleSignOutClick}>Sair</Text>
         </Container>
