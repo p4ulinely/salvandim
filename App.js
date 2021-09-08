@@ -1,12 +1,16 @@
 import React from 'react';
 
 import Routes from './src/Routes';
+
 import { AuthProvider } from './src/contexts/AuthContext'
+import { FirestoreProvider } from './src/contexts/FirestoreContext'
 
 const App = () => {
     return (
         <AuthProvider>
-            <Routes />
+            <FirestoreProvider>
+                <Routes />
+            </FirestoreProvider>
         </AuthProvider>
     );
 };

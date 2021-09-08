@@ -16,6 +16,7 @@ export const AuthProvider = ({children}) => {
             "auth/weak-password": "A senha precisa ter ao menos 6 caracteres.",
             "auth/user-not-found": "E-mail ou senha não conferem.",
             "auth/wrong-password": "E-mail ou senha não conferem.",
+            "auth/user-disabled": "Essa conta foi desbalitada.",
         };
 
         return errrorMessagesTranslated.hasOwnProperty(message) ? errrorMessagesTranslated[message] : message;
@@ -24,10 +25,11 @@ export const AuthProvider = ({children}) => {
     const getDataFromStorage = async () => {
         try {
             const uid = await AsyncStorage.getItem('uid');
-            const email = await AsyncStorage.getItem('email');
             const token = await AsyncStorage.getItem('token');
+            const email = await AsyncStorage.getItem('email');
+            const displayName = await AsyncStorage.getItem('displayName');
             
-            return { uid, email, token };
+            return { uid, token, email, displayName };
         } catch (error) {
             console.log(error);
         }
@@ -35,13 +37,14 @@ export const AuthProvider = ({children}) => {
 
     const setDataOnLocalStorageFromAuthenticatedUser = async () => {
         try {
-
             const authenticatedUser = auth().currentUser;
             const authenticatedUserToken = await authenticatedUser.getIdToken();
+            const userDisplayName = authenticatedUser.displayName ? authenticatedUser.displayName : '';
             
             await AsyncStorage.setItem('uid', authenticatedUser.uid);
-            await AsyncStorage.setItem('email', authenticatedUser.email);
             await AsyncStorage.setItem('token', authenticatedUserToken);
+            await AsyncStorage.setItem('email', authenticatedUser.email);
+            await AsyncStorage.setItem('displayName', userDisplayName);
         } catch (error) {
             console.log(error);
         }
@@ -50,8 +53,9 @@ export const AuthProvider = ({children}) => {
     const clearStorageData = async () => {
         try {
             await AsyncStorage.setItem('uid', '');
-            await AsyncStorage.setItem('email', '');
             await AsyncStorage.setItem('token', '');
+            await AsyncStorage.setItem('email', '');
+            await AsyncStorage.setItem('displayName', '');
         } catch (error) {
             console.log(error);
         }
@@ -80,8 +84,9 @@ export const AuthProvider = ({children}) => {
                     photoURL: '',
                 };
                   
-                await auth().currentUser.updateProfile(profile); // atualiza o nome do usuário que acabou de se cadastrar                //TODO: enviar e-mail para confirmação de e-mail.
+                const authenticatedUser = auth().currentUser;
 
+                await authenticatedUser.updateProfile(profile); // atualiza o nome do usuário que acabou de se cadastrar                //TODO: enviar e-mail para confirmação de e-mail.
                 await setDataOnLocalStorageFromAuthenticatedUser();
 
                 setErrorMessage(''); // TODO: Tentar eliminar esse set, mas garantir que após o request o component seja renderizado.
@@ -94,8 +99,8 @@ export const AuthProvider = ({children}) => {
 
     const handleSignOut = async () => {
         try {
-            await auth().signOut();
             await clearStorageData();
+            await auth().signOut();
         } catch (error) {
             console.log(error);
             setErrorMessage(translateErrrorMessage(error.code));
