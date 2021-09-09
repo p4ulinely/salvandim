@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
 //#region Componentes
 
 import CustomTabBar from '../components/CustomTabBar';

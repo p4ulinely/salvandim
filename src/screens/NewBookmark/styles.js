@@ -7,8 +7,42 @@ export const Container = styled.SafeAreaView`
     justify-content: flex-end;
     align-items: center;
 `;
-export const NewBookmarkDescriptionArea = styled.View`
-    background-color: #4C7FC8;
+
+export const TagArea = styled.View`
+    border-radius: 15px;
+    background-color: #E0B796;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    width: 90%;
+    height: 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+`;
+export const TagInput = styled.TextInput`
+    flex: 1;
+    padding-left: 10px;
+    font-size: 16px;
+    color: #172243;
+`;
+export const PrivacyArea = styled.View`
+    border-radius: 15px;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    width: 90%;
+    height: 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+`;
+export const DescriptionArea = styled.View`
+    background-color: #E0B796;
     border-radius: 15px;
     flex-direction: row;
     /*align-items: flex-end;*/
@@ -22,12 +56,12 @@ export const NewBookmarkDescriptionArea = styled.View`
     padding-left: 20px;
     padding-right: 20px;
 `;
-export const NewBookmarkDescriptionInput = styled.TextInput`
+export const DescriptionInput = styled.TextInput`
     flex: 1;
     font-size: 16px;
-    color: #FFFFFF;
+    color: #172243;
 `;
-export const NewBookmarkTitleArea = styled.View`
+export const TitleArea = styled.View`
     background-color: #4C7FC8;
     border-radius: 30px;
     flex-direction: row;
@@ -37,38 +71,54 @@ export const NewBookmarkTitleArea = styled.View`
     padding-right: 20px;
     margin-top: 10px;
     margin-bottom: 25px;
-    width: 90%;
+    margin-left: 20px;
+    flex: 12;
     height: 60px;
     padding-left: 20px;
     padding-right: 20px;
 `;
-export const NewBookmarkTitleInput = styled.TextInput`
+export const TitleInput = styled.TextInput`
     flex: 1;
     font-size: 16px;
     color: #FFFFFF;
     font-weight: bold;
 `;
-export const NewBookmarkAddButton = styled.TouchableOpacity`
-    width: 24px;
-    height: 24px;
+export const AddButton = styled.TouchableOpacity`
+    background-color: #4C7FC8;
+    border-radius: 30px;
+    width: 60px;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    margin-left: 10px;
+    margin-right: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    flex: 1;
 `;
 
-const Select = styled.select`
-  width: 100%;
-  height: 35px;
-  background: white;
-  color: gray;
-  padding-left: 5px;
-  font-size: 14px;
-  border: none;
-  margin-left: 10px;
+export const FooterArea = styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+`;
 
-  option {
-    color: black;
-    background: white;
-    display: flex;
-    white-space: pre;
-    min-height: 20px;
-    padding: 0px 2px 1px;
-  }
+export const MessageButtonError = styled.TouchableOpacity`
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 1px;
+    margin-bottom: 1px;
+`;
+
+export const MessageButtonErrorText = styled.Text`
+    font-size: 16px;
+    font-weight: bold;
+    color: #FF0000;
 `;

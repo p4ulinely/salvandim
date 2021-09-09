@@ -116,7 +116,11 @@ export const FirestoreProvider = ({children}) => {
                         description: bookmark.description,
                         tags: [ ...bookmark.tags ]
                     });
+                
+                return data;
             }
+
+            return null;
         } catch (error) {
             console.log(error);
             setErrorMessage(translateErrrorMessage(error.code));
@@ -132,6 +136,7 @@ export const FirestoreProvider = ({children}) => {
                 firestoreAddFirstTag,
                 firestoreAddNewTag,
                 firestoreGetBookmarksByUid,
+                firestoreAddNewBookmark,
             }}
         >
             { children }

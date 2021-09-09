@@ -102,7 +102,7 @@ export default () => {
             {/* <LogoComponent corLogo={"azul"} /> */}
             <HeaderArea>
                 <Text>{userBasicInfo.displayName ? `${userBasicInfo.displayName},` : ``}</Text>
-                <Text>Voçê tem {userBookmarks.length} notas</Text>
+                <Text>Você tem {userBookmarks.length} notas</Text>
             </HeaderArea>
             <Scroller 
                 ref={scrollRef} 
